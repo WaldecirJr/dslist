@@ -2,6 +2,7 @@ package com.devsuperior.dslist.services;
 
 import com.devsuperior.dslist.dto.*;
 import com.devsuperior.dslist.entities.*;
+import com.devsuperior.dslist.projections.*;
 import com.devsuperior.dslist.repositories.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.*;
@@ -23,6 +24,12 @@ public class GameService {
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll(){
         List<Game> result = gameRepository.findAll();
+        return result.stream().map(x -> new GameMinDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByList(Long listId){
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
         return result.stream().map(x -> new GameMinDTO(x)).toList();
     }
 }
